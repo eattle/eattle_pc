@@ -1,0 +1,11 @@
+machine:
+  timezone:
+    Asia/Seoul
+  node:
+    version: iojs-v1.3.0
+dependencies:
+  pre:
+    - npm install
+test:
+  override:
+    - npm test

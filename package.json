@@ -1,0 +1,26 @@
+{
+  "main": "main.html",
+  "name": "nw-demo",
+  "private" : true,
+  "description": "demo app of node-webkit",
+  "version": "0.1.0",
+  "keywords": [ "demo", "node-webkit" ],
+  "window": {
+    "title": "node-webkit demo",
+    "toolbar": false,
+    "width": 900,
+    "height": 556,
+    "frame": true,
+    "resizable": false,
+    "position": "center"
+  },
+  "dependencies": {
+    "riccardo": "*",
+    "lodash": "*",
+    "thunkify":"*",
+    "co": "*",
+    "sqlite3": "*",
+    "thumbnail" : "*",
+    "usb-msc-driver-nwjs": "https://github.com/eattle/usb-msc-driver-nwjs/tarball/develop"
+  }
+}

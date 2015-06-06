@@ -1,0 +1,209 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Phoket - the smart finder</title>
+	<link type="text/css" rel="stylesheet" href="css/main.css">
+
+	<script type="text/javascript" src="lib/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="lib/jquery.koalaui.js"></script>
+	
+
+	<style>
+		#window{
+			width: 900px;height: 556px;
+		}
+		body{overflow: inherit;}
+		#frame_settings{
+			width: 728px;
+			height: 450px;
+			position: absolute;
+			top:50%;
+			left: 50%;
+			margin-left: -364px;
+			margin-top: -225px;
+			box-shadow: 0 0 10px #555;
+			z-index: 1;
+			background-color: #FFF;
+		}
+	</style>
+</head>
+
+<body class="win32">
+	
+	<div id="window" sytle="position: relative;">
+		<img id="loadingBar" src="img/loading.gif" style=" position: absolute; z-index: 2; bottom: 220; left: 400; width: 100px; height: 100px;background-color: #C6C6C6">
+
+		<div id="titlebar">
+			<div class="dragbar">
+				<h1><span>P</span>hoket</h1>
+				<p class="subtitle">the smart finder</p>
+			</div>
+			<ul class="nav">
+				<span class="minimize"></span>
+				<span class="close"></span>
+			</ul>
+		</div>
+
+
+		<div id="sidebar">
+			<!-- hidden form -->
+			<!--
+			<input type="file" class="hide" nwdirectory id="ipt_addProject"/>
+			<input type="file" id="addDirectory"> 
+			
+			<input type="file" id="addDirectory"> 
+
+			<input id="image_from_list" name="image_from_list" type="hidden" value="" />
+    		<input id="image_from_file" name="image_from_file" type="file" />-->
+
+    		<input type="file" class="hide" id="ipt_addProject"/> 
+			<ul id="menus">
+				
+				<li id="addDirectory">add folder</li>
+				<li id="log">log</li>
+				<li id="settings">settings</li>
+			</ul>
+
+			<div id="projects">
+				<ul id="folders">
+					<!-- hidden form
+					<li>imagecacheimagecacheimagecache</li>
+					<li class="active">less</li>
+					<li>Sass</li>
+					<li>coffee</li>
+					 -->
+				</ul>
+			</div>
+			<div id="sidebar_resizable"></div>
+		</div>
+
+
+
+		<section id="main">
+			<header id="searchbar">
+				<button class="custom_button" id="refresh">Refresh</button>
+				<button class="custom_button" id="homebutton">Home</button>
+				<!--<button class="custom_button" id="deletebutton">delete</button>
+				<button class="custom_button" id="fileoutbutton">fileout</button>
+				<button class="custom_button" id="addfolder">addfolder</button> -->
+				<button class="custom_button" id="moreoption">Moreoption</button>
+				<button class="custom_button" id="preview">Preview</button>
+				<!--
+				<div id="searchform">
+					<input type="text" placeholder="Search" />
+					<button class="custom_button">submit</button>
+				</div>
+				-->
+				<div class="hr"></div>
+			</header>
+			<section id="files">
+				<!-- hidden form -->
+				<ul id="filelist">
+					<!--
+					<li class="file_item1" align="center">
+						<img src="img/less.png"  alt="" style="padding: 5px 0 0 0">
+						<h3>test.less</h3>
+					</li>
+					<li class="file_item1" align="center">
+						<img src="img/less.png"  alt="" style="padding: 5px 0 0 0">
+						<h3>test.less</h3>
+					</li>
+					-->
+
+
+					<!--
+					<li class="file_item">
+						<img class="icon" src="img/less.png" alt="">
+						<h3 class="name">test.less</h3>
+						<p class="output">
+							<button class="custom_button changeOutput">change</button>
+							<span>test.css</span>
+						</p>
+					</li>
+					<li class="file_item">
+						<img class="icon" src="img/scss.png" alt="">
+						<h3 class="name">demo.scss</h3>
+						<p class="output">
+							<button class="custom_button changeOutput">change</button>
+							<span>demo.css</span>
+						</p>
+					</li>
+					<li class="file_item">
+						<img class="icon" src="img/sass.png" alt="">
+						<h3 class="name">style.sass</h3>
+						<p class="output">
+							<button class="custom_button changeOutput">change</button>
+							<span>style.css</span>
+						</p>
+					</li>
+					<li class="file_item">
+						<img class="icon" src="img/coffee.png" alt="">
+						<h3 class="name">hello.coffee</h3>
+						<p class="output">
+							<button class="custom_button changeOutput">change</button>
+							<span>hello.js</span>
+						</p>
+					</li>
+					-->
+
+				</ul>
+			</section>
+
+		</section>
+		
+		<!--
+		<canvas id="tshirtCanvas" width="600" height="200" style="border:1px solid #d3d3d3;"></canvas>
+		-->
+		
+		
+	
+	</div>
+		
+	<script> require('nw.gui').Window.get().showDevTools() </script>
+	<script src="init.js"></script>
+
+
+
+
+
+
+
+	<!--<script src="scripts/fileSystem.js"></script>-->
+
+
+
+
+	
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+
+
+<div class="my-thumb-1">
+	      <img src="kai.jpg">
+	    </div>
+<script>
+	$(document).ready(function() {
+	        $( '.my-thumb-1' ).nailthumb();
+	        console.log("a");
+	    });
+	</script>
+
+
+
+
+
+
+	-->
