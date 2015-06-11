@@ -21,6 +21,9 @@
     "co": "*",
     "sqlite3": "*",
     "thumbnail" : "*",
+    "mkdirp": "*",
+    "gm": "*",
+    "exif": "*",
     "usb-msc-driver-nwjs": "https://github.com/eattle/usb-msc-driver-nwjs/tarball/develop"
   }
 }
