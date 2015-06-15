@@ -65,9 +65,9 @@ fileSystem.prototype = {
 
   fileInputInit: function* (file, binaryString) {
     yield this.addElementPush(file.name, binaryString);
-    yield this.addElementPushCopy();
-    //self.fileInit(btoa(binaryString)); //초기화 
-    //self.incaseSearchTable();//탐색테이블 만듬 초기화 
+    // yield this.addElementPushCopy();
+    // self.fileInit(btoa(binaryString)); // 초기화 
+    // self.incaseSearchTable(); // 탐색테이블 만듦 초기화 
     yield this.printAllBlock(1);
   },
 

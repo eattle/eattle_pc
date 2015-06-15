@@ -10,9 +10,7 @@
   display: none;
 }
 /* line 7, main.less */
-.icon {
-  background: url(../img/icons.png) no-repeat;
-}
+
 /* line 10, main.less */
 .textOverhide {
   text-overflow: ellipsis;
@@ -198,11 +196,11 @@ body {
 }
 /* line 173, main.less */
 #menus #log:before {
-  background-position: -119px 0;
+  background: url(../img/delete_icon.png);
 }
 /* line 176, main.less */
 #menus #settings:before {
-  background-position: -153px 0;
+  background: url(../img/Send_icon.png);
 }
 /* line 182, main.less */
 #projects {
@@ -295,64 +293,39 @@ body {
   padding-right: 8px;
 }
 
-/*
-#searchbar #refresh {
-  display: inine-block;
-  height: 22px;
-  background: -webkit-linear-gradient(top, #73c232 0%, #5da029 100%);
-  border: none;
-  outline: none;
-  border-radius: 20px;
-  color: #FFF;
-  text-shadow: 1px 1px 1px #5fa12d;
-  position: relative;
-  top: 2px;
-  text-indent: 18px;
-  padding-right: 8px;
+
+#searchbar #homebutton:after{
+  position: absolute;
+  top: 50%;
+  left: 6px;
+  margin-top: -8px;
+  width: 14px;
+  height: 16px;
+  background: url(../img/home_icon.png);
+  content: '';
 }
-#searchbar #homebutton {
-  display: inine-block;
-  height: 22px;
-  background: -webkit-linear-gradient(top, #73c232 0%, #5da029 100%);
-  border: none;
-  outline: none;
-  border-radius: 20px;
-  color: #FFF;
-  text-shadow: 1px 1px 1px #5fa12d;
-  position: relative;
-  top: 2px;
-  text-indent: 18px;
-  padding-right: 8px;
+#searchbar #moreoption:after {
+  position: absolute;
+  top: 50%;
+  left: 6px;
+  margin-top: -8px;
+  width: 14px;
+  height: 16px;
+  background: url(../img/refresh_cion.png);
+  content: '';
 }
-#searchbar #moreoption {
-  display: inine-block;
-  height: 22px;
-  background: -webkit-linear-gradient(top, #73c232 0%, #5da029 100%);
-  border: none;
-  outline: none;
-  border-radius: 20px;
-  color: #FFF;
-  text-shadow: 1px 1px 1px #5fa12d;
-  position: relative;
-  top: 2px;
-  text-indent: 18px;
-  padding-right: 8px;
+#searchbar #preview:after {
+  position: absolute;
+  top: 50%;
+  left: 6px;
+  margin-top: -8px;
+  width: 14px;
+  height: 16px;
+  background: url(../img/preview_icon.png);
+  content: '';
 }
-#searchbar #preview {
-  display: inine-block;
-  height: 22px;
-  background: -webkit-linear-gradient(top, #73c232 0%, #5da029 100%);
-  border: none;
-  outline: none;
-  border-radius: 20px;
-  color: #FFF;
-  text-shadow: 1px 1px 1px #5fa12d;
-  position: relative;
-  top: 2px;
-  text-indent: 18px;
-  padding-right: 8px;
-}
-/* line 271, main.less */
+
+/* line 271, main.less 
 #searchbar .custom_button:after {
   position: absolute;
   top: 50%;
@@ -364,6 +337,7 @@ body {
   background-position: -142px -49px;
   content: '';
 }
+*/
 /* line 282, main.less */
 #searchbar .custom_button:hover {
   background: -webkit-linear-gradient(top, #73c232 0%, #357900 100%);
