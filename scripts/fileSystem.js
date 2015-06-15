@@ -73,7 +73,7 @@ fileSystem.prototype = {
         
 
         yield this.addElementPush(file.name,binaryString);
-        yield this.addElementPushCopy();
+        //yield this.addElementPushCopy();
 
         //self.fileInit(btoa(binaryString)); //초기화 
         //self.incaseSearchTable();//탐색테이블 만듬 초기화 

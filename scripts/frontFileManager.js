@@ -32,6 +32,9 @@ frontFileManager.prototype = {
 		var self = this;
 		this.filesystemlayer.fileSystemInit(function () {
 
+			//썸네일 만드는것 
+			self.makeThumbnailProcess(); 
+
 			var sqlite3 = require('sqlite3').verbose();
 			var db = new sqlite3.Database('CaPicDB');
 
@@ -369,8 +372,10 @@ frontFileManager.prototype = {
 			//self.dbUpdate();
 
 
-			//썸네일 만드는것 
-			//self.makeThumbnailProcess(); 
+			
+
+
+
 			//db.run("UPDATE media SET picturetaken=1422926902484 where id =999");
 	/*
 			var sqlite3 = require('sqlite3').verbose();
@@ -494,6 +499,9 @@ frontFileManager.prototype = {
 	  	};
 
 	  	var makeThumbnail = function (filename) {
+	  		if(filename === "CaPicDB")
+	  			return;
+
 			var fs = require('fs');
 			var gm = require('gm').subClass({ imageMagick: true });
 			fs.exists('thumbnails/'+ filename, function (exists) {
@@ -522,7 +530,7 @@ frontFileManager.prototype = {
 		var pageCreator = [
 			'<li id= "folder'+ folderid +'" class="file_item" title="' + foldername + '" tag = "' + folderid + '">',
 			'<img id = "folder' + folderid + '" class="icon" src="img/folder.png" alt="" tag = "' + folderid + '">',
-			'<h3 id = "folder' + folderid + '" class="name" tag = "' + folderid + '">' + foldername + '</h3>',
+			'<h3 id = "folder' + folderid + '" class="name" tag = "' + folderid + '" style="padding: 10px 0 0 0;">' + foldername + '</h3>',
 			'</li>'
         ].join('\n');
 
@@ -547,15 +555,15 @@ frontFileManager.prototype = {
 			var pageCreator = [
 				'<li id = "' + filename + '" class="file_item" title="' + filename + '">',
 				'<img id = "' + filename + '" class="icon" src="thumbnails/'+ filename + '" alt="">',
-				'<h3 id = "' + filename + '" class="name">' + filename + '</h3>',
+				'<h3 id = "' + filename + '" class="name" style="padding: 10px 0 0 0;">' + filename + '</h3>',
 				'</li>'
 		    ].join('\n');
 		}
 		else{
 			var pageCreator = [
 				'<li id = "' + filename + '" class="file_item" title="' + filename + '">',
-				'<img id = "' + filename + '" class="icon" src="img/coffee.png" alt="">',
-				'<h3 id = "' + filename + '" class="name">' + filename + '</h3>',
+				'<img id = "' + filename + '" class="icon" src="img/noimage.png" alt="">',
+				'<h3 id = "' + filename + '" class="name" style="padding: 10px 0 0 0;">' + filename + '</h3>',
 				'</li>'
 		    ].join('\n');
 		}
@@ -578,7 +586,7 @@ frontFileManager.prototype = {
 		else{
 			var pageCreator = [
 				'<li id = "' + filename + '" class="file_item1" align="center" title="' + filename + '">',
-				'<img id = "' + filename + '" src="img/coffee.png"  alt="" style="padding: 5px 0 0 0; width: 53px; height: 53px;">',
+				'<img id = "' + filename + '" src="img/noimage.png"  alt="" style="padding: 5px 0 0 0; width: 53px; height: 53px;">',
 				'<h3 id = "' + filename + '" class="name" >' + filename + '</h3>',
 				'</li>'
 			].join('\n');
@@ -755,6 +763,7 @@ frontFileManager.prototype = {
 			else{//파일
 				var gui = require('nw.gui');
 	        	gui.Shell.openItem(e.target.id);
+	        	//바탕화면에 있는 것만 열림 
 			}
 		});
 
