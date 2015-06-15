@@ -74,7 +74,9 @@ fileSystem.prototype = {
   emptySpaceSearch: function* () {
     var dummybuffer = new Buffer(512);
     var num = 0;
-    var resultBuffer = yield readBlock(3, dummybuffer);
+    var resultBuffer;
+    
+    resultBuffer = yield readBlock(3, dummybuffer);
     var i;
     for (i = 0; i < 512; i++) {
       if ((resultBuffer[i] & 0x80) === 0) { num = 0; break; }
@@ -86,7 +88,7 @@ fileSystem.prototype = {
       if ((resultBuffer[i] & 0x02) === 0) { num = 6; break; }
       if ((resultBuffer[i] & 0x01) === 0) { num = 7; break; }
     }
-    var resultBuffer = yield readBlock((i * 8) + num + 4, dummybuffer);
+    resultBuffer = yield readBlock((i * 8) + num + 4, dummybuffer);
 
     // (i * 8) + num -> 몇 번째인지 
     var addressnum = (i * 8) + num;
@@ -121,7 +123,7 @@ fileSystem.prototype = {
       var limit = 0;
       var bytecnt = 0;
       var resultfirstBuffer = yield readBlock(resultstringaddress, dummyFristbuffer);
-      while (resultstringaddress != 0) {
+      while (resultstringaddress !== 0) {
         var originalbyteAddress = yield self.readIntToBinary(resultstringaddress, limit, self.LOCATIONSIZE, resultfirstBuffer);
         var resultBuffer = yield readBlock(originalbyteAddress, buffer);
         for (var i = 0; i < self.CLUSTERSPACESIZE; i++) {
@@ -145,7 +147,7 @@ fileSystem.prototype = {
     }
 
     var writeStream;
-    if (outpath == false) {
+    if (outpath === false) {
       writeStream = fs.createWriteStream('../' + selectfilename);
     } else {
       writeStream = fs.createWriteStream(outpath + '/' + selectfilename);
@@ -174,7 +176,7 @@ fileSystem.prototype = {
       var limit = 0;
       var bytecnt = 0;
       var resultfirstBuffer = yield readBlock(resultstringaddress, dummyFristbuffer);
-      while (resultstringaddress != 0) {
+      while (resultstringaddress !== 0) {
         var originalbyteAddress = yield self.readIntToBinary(resultstringaddress, limit, self.LOCATIONSIZE, resultfirstBuffer);
         var resultBuffer = yield readBlock(originalbyteAddress, buffer);
         for (var i = 0; i < self.CLUSTERSPACESIZE; i++) {
@@ -202,7 +204,7 @@ fileSystem.prototype = {
         mCanvas.width = 300;
         mCanvas.height = 300;
         mContext.drawImage(img, 10, 10, 280, 250);
-      }
+      };
       // console.log('x1x1x1xx1xxx11x1xx1xxxxxxxx ' + resultbyte.length);
       var base64Image = resultbyte.toString('base64');
       img.src = "data:image/gif;base64," + base64Image;
@@ -249,9 +251,9 @@ fileSystem.prototype = {
 
       startaddress = startaddress+tablesize;
       
-      if (startaddress >= (yield self.readIntToBinary(location, this.SPACELOCATION, this.SPACESIZE, resultBuffer)) {
+      if (startaddress >= (yield self.readIntToBinary(location, this.SPACELOCATION, this.SPACESIZE, resultBuffer))) {
         location = yield self.readIntToBinary(location, this.NEXTLOCATION, this.LOCATIONSIZE, resultBuffer);
-        if (location == 0) {
+        if (location === 0) {
           break;
         }
         resultBuffer = yield readBlock(location, buffer);
@@ -274,7 +276,7 @@ fileSystem.prototype = {
         resultBuffer[j] = 0; // 비어 있는 공간 찾고 표시
       }
       yield writeBlock(last, resultBuffer);
-      if (result == 0) {
+      if (result === 0) {
         break;
       }
       last = result;
@@ -285,7 +287,9 @@ fileSystem.prototype = {
     var dummybuffer = new Buffer(512);
     location = location-4;
     var flag = true;
-    var resultBuffer = yield readBlock((location >> 12) - 1 + 4, dummybuffer);
+    var resultBuffer;
+
+    resultBuffer = yield readBlock((location >> 12) - 1 + 4, dummybuffer);
     if (((location & 0x0FFF) & 0x07) === 0) { resultBuffer[(location & 0x0FFF) >> 3] |= 0x80; }
     if (((location & 0x0FFF) & 0x07) === 1) { resultBuffer[(location & 0x0FFF) >> 3] |= 0x40; }
     if (((location & 0x0FFF) & 0x07) === 2) { resultBuffer[(location & 0x0FFF) >> 3] |= 0x20; }
@@ -296,14 +300,14 @@ fileSystem.prototype = {
     if (((location & 0x0FFF) & 0x07) === 7) { resultBuffer[(location & 0x0FFF) >> 3] |= 0x01; }
     
     for (var i = 0; i < this.CLUSTERSPACESIZE; i++) {
-      if (resultBuffer[i] != -1) {
+      if (resultBuffer[i] !== -1) {
         flag = false;
         break;
       }
     }
     yield writeBlock((location >> 12) -1 + 4, resultBuffer);
 
-    var resultBuffer = yield readBlock(3, dummybuffer);
+    resultBuffer = yield readBlock(3, dummybuffer);
     if (flag) {
       if ((((location >> 12) - 1) & 0x07) === 0){ resultBuffer[2][((location >> 12) - 1) >> 3] |= 0x80; }
       if ((((location >> 12) - 1) & 0x07) === 1){ resultBuffer[2][((location >> 12) - 1) >> 3] |= 0x40; }
@@ -338,11 +342,12 @@ fileSystem.prototype = {
     var self = this;
     var givetablelocation = 1;
     var taketablelocation = 0;
+    var i;
     
     // 0번째 0으로 다 만들어 준다. 
     yield self.dropfiletable(taketablelocation);
     // 서치 테이블 보고 주소들 0 만들어 준다.  
-    for (var i = 0; i < this.endpoint; i++) {
+    for (i = 0; i < this.endpoint; i++) {
       yield self.dropfiletable(this.searchtable[i][1]);
     }
     
@@ -357,7 +362,7 @@ fileSystem.prototype = {
     while (true) {
       var flag = true;
       // 해당되는 주소들 집합 
-      for (var i = 0; i < self.CLUSTERSPACESIZE; i += blocksize) {
+      for (i = 0; i < self.CLUSTERSPACESIZE; i += blocksize) {
         var location = yield self.readIntToBinary(last, i + self.STRINGSIZE + self.STRINGLENSIZE, self.LOCATIONSIZE, resultFirstBuffer);
         if (location === 0) {
           break;
@@ -424,9 +429,12 @@ fileSystem.prototype = {
   },
 
   copytableinit: function* () {
+    var i;
     var self = this;
     var tablelocation = 1;
     var addresslocation;
+    var dummySpace;
+    var resultBuffer;
 
     // 0으로 만들기
     var blocksize = this.STRINGSIZE + this.STRINGLENSIZE + this.LOCATIONSIZE;
@@ -434,11 +442,11 @@ fileSystem.prototype = {
     var result = tablelocation;
 
     while (true) {
-      var resultBuffer = yield readBlock(last, buffer);
+      resultBuffer = yield readBlock(last, buffer);
 
       var flag = true;
       // 해당되는 주소들 집합 
-      for (var i = 0; i < self.CLUSTERSPACESIZE; i += blocksize) {
+      for (i = 0; i < self.CLUSTERSPACESIZE; i += blocksize) {
         // 번지
         var location = yield self.readIntToBinary(last, i + self.STRINGSIZE + self.STRINGLENSIZE, self.LOCATIONSIZE, resultBuffer);
         if (location === 0) {
@@ -463,7 +471,7 @@ fileSystem.prototype = {
       last = result;
     }
 
-    for (var i = 0; i < this.endpoint; i++) {
+    for (i = 0; i < this.endpoint; i++) {
       addresslocation = yield self.emptySpaceSearch();
 
       var beforeaddresslocation = addresslocation;
@@ -471,7 +479,7 @@ fileSystem.prototype = {
       // 주소
       result = self.searchtable[i][1]; 
       while (true) {
-        var resultBuffer = yield readBlock(result, buffer);
+        resultBuffer = yield readBlock(result, buffer);
         yield writeBlock(addresslocation, resultBuffer);
         yield self.clusterWriteCheck(addresslocation); //비어 있는 공간 찾고 표시 
         
@@ -481,7 +489,7 @@ fileSystem.prototype = {
           break;
         }
         
-        var dummySpace = yield self.emptySpaceSearch();
+        dummySpace = yield self.emptySpaceSearch();
 
         // 마지막 위치 넣어 주기
         yield self.pushBinary(addresslocation, dummySpace, self.LOCATIONSIZE, self.NEXTLOCATION);
@@ -497,7 +505,7 @@ fileSystem.prototype = {
       yield self.pushAddress(self.searchtable[i][4], self.STRINGLENSIZE, tablelocation, "0"); // 길이 
       var limit = yield self.pushAddress(beforeaddresslocation, self.LOCATIONSIZE, tablelocation, "0"); // 번지 
       if (limit >= self.SPACELOCATION) {
-        var dummySpace = yield self.emptySpaceSearch();
+        dummySpace = yield self.emptySpaceSearch();
         yield self.pushBinary(tablelocation, dummySpace, self.LOCATIONSIZE, self.NEXTLOCATION); // 마지막 위치 넣어 주기 
         tablelocation = dummySpace;
         yield self.clusterWriteCheck(tablelocation); // 비어 있는 공간 찾고 표시 
@@ -508,6 +516,8 @@ fileSystem.prototype = {
   fileInit: function* (binaryString) {
     var allAddressSpace = 0;
     var self = this;
+    var dummySpace;
+
     for (var i = 1; i <= 1; i++) { //content.length
       var bytearray = new Buffer(binaryString, 'base64');
       bytearray = binaryString;
@@ -523,8 +533,8 @@ fileSystem.prototype = {
 
       yield self.clusterWriteCheck(emptyCoreAdressSpace); // 비어 있는 공간 찾고 표시 
       if (limit >= this.SPACELOCATION) {
-        var dummySpace = yield self.emptySpaceSearch();
-        yield self.pushBinary(allAddressSpace, dummySpace, LOCATIONSIZE, NEXTLOCATION); // 마지막 위치 넣어주기 
+        dummySpace = yield self.emptySpaceSearch();
+        yield self.pushBinary(allAddressSpace, dummySpace, this.LOCATIONSIZE, this.NEXTLOCATION); // 마지막 위치 넣어주기 
         allAddressSpace = dummySpace;
         yield self.clusterWriteCheck(allAddressSpace); // 비어 있는 공간 찾고 표시 
       }
@@ -547,7 +557,7 @@ fileSystem.prototype = {
         limit = yield self.pushAddress(emptyCoreSpace, this.LOCATIONSIZE, emptyCoreAdressSpace, "0");
         
         if (limit >= this.SPACELOCATION) {
-          var dummySpace = yield self.emptySpaceSearch();
+          dummySpace = yield self.emptySpaceSearch();
           yield self.pushBinary(emptyCoreAdressSpace, dummySpace, this.LOCATIONSIZE, this.NEXTLOCATION);
           emptyCoreAdressSpace = dummySpace;
           yield self.clusterWriteCheck(emptyCoreAdressSpace); // 비어 있는 공간 찾고 표시 
@@ -559,7 +569,8 @@ fileSystem.prototype = {
   readStringToBinary: function* (location, address, currentlocationsize, resultBuffer) {
     //byte -> string
     var cnt = 0;
-    for (var i = address; i < address + currentlocationsize; i++) {
+    var i;
+    for (i = address; i < address + currentlocationsize; i++) {
       if (resultBuffer[i] === 0) {
         break;
       }
@@ -570,7 +581,7 @@ fileSystem.prototype = {
     }
     var binaryByte = new Array(cnt);
     var count = 0;
-    for (var i = address; i < address + cnt; i++) {
+    for (i = address; i < address + cnt; i++) {
       binaryByte[count++] = resultBuffer[i];
     }
     return String.fromCharCode.apply(String, binaryByte);
@@ -587,19 +598,20 @@ fileSystem.prototype = {
 
   pushStringBinary: function* (location, conversion, currentlocationsize, address) {
     // string -> byte
-    var self = this;
+    var i;
     var dummybuffer = new Buffer(512);
     var resultBuffer = yield readBlock(location, dummybuffer);
+
     if (conversion === "0") {
-      for (var i = 0; i < currentlocationsize; i++) {
+      for (i = 0; i < currentlocationsize; i++) {
         resultBuffer[address + i] = 0;
       }
     } else {
-      var binaryByte = new Array();
-      for (var i = 0; i < conversion.length; ++i) {
+      var binaryByte = [];
+      for (i = 0; i < conversion.length; ++i) {
         binaryByte.push(conversion.charCodeAt(i));
       }
-      for (var i = 0; i < currentlocationsize; i++) {
+      for (i = 0; i < currentlocationsize; i++) {
         if (i < binaryByte.length) {
           resultBuffer[address + i] = binaryByte[i];
         } else {
@@ -612,14 +624,15 @@ fileSystem.prototype = {
 
   pushBinary: function* (location, conversion, currentlocationsize, address) {
     // int -> byte
+    var i;
     var dummybuffer = new Buffer(512);
     var resultBuffer = yield readBlock(location, dummybuffer);
     if (conversion === 0) {
-      for (var i = 0; i < currentlocationsize; i++) {
+      for (i = 0; i < currentlocationsize; i++) {
         resultBuffer[address+i] = 0;
       }
     } else {
-      for (var i = 0; i < currentlocationsize; i++) {
+      for (i = 0; i < currentlocationsize; i++) {
         resultBuffer[address + currentlocationsize - i - 1] = conversion >> (8 * i);
       }
     }
@@ -648,7 +661,7 @@ fileSystem.prototype = {
     var dummybuffer = new Buffer(512);
     var resultBuffer = yield readBlock(last, dummybuffer);
     var result = yield self.readIntToBinary(last, this.NEXTLOCATION, this.LOCATIONSIZE, resultBuffer);
-    while (result != 0) {
+    while (result !== 0) {
       last = result;
       resultBuffer = yield readBlock(last, dummybuffer);
       result = yield self.readIntToBinary(last, this.NEXTLOCATION, this.LOCATIONSIZE, resultBuffer);
@@ -657,13 +670,14 @@ fileSystem.prototype = {
   },
 
   addElementPushCopy: function* () {
-    // 0번지 백업 
+    // 0번지 백업
+    var dummySpace;
     var self = this;
     var last =  yield self.lastHaveSpaceReturn(1);
     var dummystring = this.searchtable[this.endpoint - 1][0];
     var dummyfilelen = this.searchtable[this.endpoint - 1][4]; // 파일의 길이 
     var dummystringaddress = this.searchtable[this.endpoint - 1][1]; // 마지막 번째 번지 
-    
+
     var addresslocation = yield self.emptySpaceSearch();
 
     // 여기 dummystring
@@ -672,7 +686,7 @@ fileSystem.prototype = {
     var limit = yield self.pushAddress(addresslocation, this.LOCATIONSIZE, last[0], "0"); //번지 
     
     if (limit >= this.SPACELOCATION) {
-      var dummySpace = yield self.emptySpaceSearch();
+      dummySpace = yield self.emptySpaceSearch();
       self.pushBinary(last[0], dummySpace, this.LOCATIONSIZE, this.NEXTLOCATION); // 마지막 위치 넣어 주기 
       last[0] = dummySpace;
       yield self.clusterWriteCheck(last[0]); // 비어 있는 공간 찾고 표시 
@@ -691,7 +705,7 @@ fileSystem.prototype = {
         break;
       }
 
-      var dummySpace = yield self.emptySpaceSearch();
+      dummySpace = yield self.emptySpaceSearch();
       yield self.pushBinary(addresslocation,dummySpace, this.LOCATIONSIZE, this.NEXTLOCATION); // 마지막 위치 넣어주기
       addresslocation = dummySpace;
       yield self.clusterWriteCheck(addresslocation); // 비어 있는 공간 찾고 표시
@@ -706,6 +720,7 @@ fileSystem.prototype = {
 
   addElementPush: function* (content, binaryString) {
 
+    var dummySpace;
     var self = this;
     var bytearray = new Buffer(binaryString, 'base64');
     
@@ -726,7 +741,7 @@ fileSystem.prototype = {
     var fristemptyCoreAdressSpace = emptyCoreAdressSpace;
 
     if (limit >= this.SPACELOCATION) {
-      var dummySpace = yield self.emptySpaceSearch();
+      dummySpace = yield self.emptySpaceSearch();
       yield self.pushBinary(last, dummySpace, this.LOCATIONSIZE, this.NEXTLOCATION); // 마지막 위치 넣어 주기 
       yield self.clusterWriteCheck(dummySpace); // 비어 있는 공간 찾고 표시
     }
@@ -747,7 +762,7 @@ fileSystem.prototype = {
       // 주소들 값 넣기(원본) 
       limit = yield self.pushAddress(emptyCoreSpace, this.LOCATIONSIZE, emptyCoreAdressSpace, "0");
       if (limit >= this.SPACELOCATION) {
-        var dummySpace = yield self.emptySpaceSearch();
+        dummySpace = yield self.emptySpaceSearch();
         yield self.pushBinary(emptyCoreAdressSpace, dummySpace, this.LOCATIONSIZE, this.NEXTLOCATION);
         emptyCoreAdressSpace = dummySpace;
         yield self.clusterWriteCheck(emptyCoreAdressSpace); // 비어 있는 공간 찾고 표시
@@ -782,7 +797,7 @@ fileSystem.prototype = {
 
     var resultBuffer = yield readBlock(last, dummybuffer);
     var result = yield self.readIntToBinary(last, this.NEXTLOCATION, this.LOCATIONSIZE, resultBuffer);
-    while (result != 0) {
+    while (result !== 0) {
       sublast = last;
       last = result;
       resultBuffer = yield readBlock(last, dummybuffer);
@@ -808,22 +823,22 @@ fileSystem.prototype = {
     var self = this;
     var blocksize = this.LOCATIONSIZE + this.STRINGLENSIZE + this.STRINGSIZE;
     var last = 1;
-    var result;
+    var result, i, resultBuffer;
     
     var dummystringaddress = 0;
     
     var location = 0;
     var address = 0;
-    var resultBuffer = yield readBlock(last, buffer);
+    resultBuffer = yield readBlock(last, buffer);
 
     var deleteBuffer = new Buffer(512);
-    for (var i = 0; i < 512; i++) {
+    for (i = 0; i < 512; i++) {
       deleteBuffer[i] = 0;
     }
 
     // 검색 
     while (true) {
-      for (var i = 0; i < self.CLUSTERSPACESIZE; i += blocksize) {
+      for (i = 0; i < self.CLUSTERSPACESIZE; i += blocksize) {
         var dummystring = yield self.readStringToBinary(last, i, self.STRINGSIZE, resultBuffer);
         if (dummystring === delString) {
           location = last;
@@ -840,8 +855,8 @@ fileSystem.prototype = {
     }
     
     // 주솟값 삭제
-    while (dummystringaddress != 0) {
-      var resultBuffer = yield readBlock(dummystringaddress, buffer);
+    while (dummystringaddress !== 0) {
+      resultBuffer = yield readBlock(dummystringaddress, buffer);
       var dummy = yield self.readIntToBinary(dummystringaddress, self.NEXTLOCATION, self.LOCATIONSIZE, resultBuffer);
 
       yield writeBlock(dummystringaddress, deleteBuffer);
@@ -852,7 +867,7 @@ fileSystem.prototype = {
 
     // 0번지 삭제 
     last =  yield self.lastHaveSpaceReturn(1);
-    if (last[1] == 1) {
+    if (last[1] === 1) {
       yield self.pushBinary(last[0], 0, this.LOCATIONSIZE, this.NEXTLOCATION);
     }
     resultBuffer = yield readBlock(last[0], buffer);
@@ -883,17 +898,18 @@ fileSystem.prototype = {
     // resultBuffer[this.ISCOMPLETELOCATION] = 1;
     // yield writeBlock(1, resultBuffer);
 
-    console.log("success1")
+    console.log("success1");
   },
 
   filedelete: function* (delString) {
     var self = this;
+    var i;
 
     var deleteBuffer = new Buffer(512);
-    for (var i = 0; i < 512; i++) {
+    for (i = 0; i < 512; i++) {
       deleteBuffer[i] = 0;
     }
-    var result = new Array();
+    var result = [];
     result = yield self.stringSearch(delString);
 
     if (result[0] === -1) {
@@ -902,10 +918,10 @@ fileSystem.prototype = {
       var resultstringaddress = result[0];
       var resultBuffer = yield readBlock(resultstringaddress, buffer);
       // 실제 파일과 주소값 삭제
-      while (resultstringaddress != 0) {
+      while (resultstringaddress !== 0) {
         var endlocation = yield self.readIntToBinary(resultstringaddress, this.SPACELOCATION, this.SPACESIZE, resultBuffer);
         console.log(endlocation);
-        for (var i = 0; i < endlocation; i += this.LOCATIONSIZE) {
+        for (i = 0; i < endlocation; i += this.LOCATIONSIZE) {
           var deleteSpace = yield self.readIntToBinary(resultstringaddress, i, this.LOCATIONSIZE, resultBuffer);
           yield writeBlock(deleteSpace, deleteBuffer);
           yield self.clusterWriteUnCheck(deleteSpace); //비어있는 체크된것 해제하기
@@ -919,7 +935,7 @@ fileSystem.prototype = {
 
       // 0번째 값
       var last =  yield self.lastHaveSpaceReturn(0);
-      if (last[1] == 1) {
+      if (last[1] === 1) {
         yield self.pushBinary(last[0], 0, this.LOCATIONSIZE, this.NEXTLOCATION);
         console.log("NEXT");
       }
@@ -948,11 +964,11 @@ fileSystem.prototype = {
       console.log("2");
 
       // 탐색 테이블 삭제 
-      this.searchtable[result[1]][0] = this.searchtable[this.endpoint-1][0]; // 마지막 문자열 
-      this.searchtable[result[1]][1] = this.searchtable[this.endpoint-1][1]; // 마지막 번지 
-      this.searchtable[result[1]][2] = this.searchtable[this.endpoint-1][2]; // 마지막 위치 
-      this.searchtable[result[1]][3] = this.searchtable[this.endpoint-1][3]; // 마지막 주소  
-      this.searchtable[result[1]][4] = this.searchtable[this.endpoint-1][4]; // 마지막 파일 길이  
+      this.searchtable[result[1]][0] = this.searchtable[this.endpoint - 1][0]; // 마지막 문자열 
+      this.searchtable[result[1]][1] = this.searchtable[this.endpoint - 1][1]; // 마지막 번지 
+      this.searchtable[result[1]][2] = this.searchtable[this.endpoint - 1][2]; // 마지막 위치 
+      this.searchtable[result[1]][3] = this.searchtable[this.endpoint - 1][3]; // 마지막 주소  
+      this.searchtable[result[1]][4] = this.searchtable[this.endpoint - 1][4]; // 마지막 파일 길이  
       this.searchtable[this.endpoint-1][0] = "0";
       this.searchtable[this.endpoint-1][1] = "0";
       this.searchtable[this.endpoint-1][2] = "0";
@@ -968,7 +984,7 @@ fileSystem.prototype = {
       // console.log(yield self.readIntToBinary(last[0],this.SPACELOCATION,this.SPACESIZE));
       
       // 마지막 값과 찾는 값과 같으면 끝낸다 (1개 남은 상태)
-      if (changeString != delString) {
+      if (changeString !== delString) {
 
         // 변경할 값 실제 넣어주기 
         // 여기 changeString
@@ -1037,4 +1053,4 @@ fileSystem.prototype = {
       result = yield self.readIntToBinary(last, this.NEXTLOCATION, this.LOCATIONSIZE, resultBuffer);
     }
   }
-}
+};

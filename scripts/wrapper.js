@@ -10,7 +10,7 @@ function wrap(obj, func) {
     function error(err) {
       callback(err);
     }
-  }
+  };
 }
 
 function testWrapper() {
