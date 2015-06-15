@@ -1,0 +1,28 @@
+{
+  "name": "Phoket",
+  "version": "0.1.0",
+  "main": "main.html",
+  "description" : "Phoket for PC",
+  "repository": "https://github.com/eattle/eattle_pc.git",
+  "license": "Proprietary",
+  "window": {
+    "title": "Phoket for PC",
+    "toolbar": true,
+    "width": 900,
+    "height": 556,
+    "resizable": false,
+    "position": "center"
+  },
+  "dependencies": {
+    "riccardo": "*",
+    "lodash": "*",
+    "thunkify":"*",
+    "co": "*",
+    "sqlite3": "*",
+    "thumbnail" : "*",
+    "mkdirp": "*",
+    "gm": "*",
+    "exif": "*",
+    "usb-msc-driver-nwjs": "https://github.com/eattle/usb-msc-driver-nwjs/tarball/develop"
+  }
+}

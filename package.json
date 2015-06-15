@@ -1,29 +1,28 @@
 {
-  "main": "main.html",
-  "name": "nw-demo",
-  "private" : true,
-  "description": "demo app of node-webkit",
+  "name": "eattle_pc",
   "version": "0.1.0",
-  "keywords": [ "demo", "node-webkit" ],
-  "window": {
-    "title": "node-webkit demo",
-    "toolbar": false,
-    "width": 900,
-    "height": 556,
-    "frame": true,
-    "resizable": false,
-    "position": "center"
+  "description": "Phoket for PC",
+  "private": "true",
+  "scripts": {
+    "test": "grunt test"
   },
-  "dependencies": {
-    "riccardo": "*",
-    "lodash": "*",
-    "thunkify":"*",
-    "co": "*",
-    "sqlite3": "*",
-    "thumbnail" : "*",
-    "mkdirp": "*",
-    "gm": "*",
-    "exif": "*",
-    "usb-msc-driver-nwjs": "https://github.com/eattle/usb-msc-driver-nwjs/tarball/develop"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eattle/eattle_pc.git"
+  },
+  "author": "Eattle",
+  "license": "Proprietary",
+  "bugs": {
+    "url": "https://github.com/eattle/eattle_pc/issues"
+  },
+  "homepage": "https://github.com/eattle/eattle_pc",
+  "devDependencies": {
+    "mocha": "*",
+    "grunt": "*",
+    "grunt-mocha-test": "*",
+    "grunt-contrib-jshint": "*",
+    "grunt-node-webkit-builder": "*",
+    "grunt-auto-install": "*",
+    "thunkify": "*"
   }
 }

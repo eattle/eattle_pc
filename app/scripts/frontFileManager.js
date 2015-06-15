@@ -1,6 +1,9 @@
+/*global fileSystem:false*/
 function frontFileManager() {
-  this.filesystem = new fileSystem(); // 그냥 쓰고 싶을 때
-  this.filesystemlayer = new fileSystemLayer(this.filesystem); // * 쓰고 싶을 때
+  // 그냥 쓰고 싶을 때 
+  this.filesystem = new fileSystem(); // jshint ignore:line
+  // * 쓰고 싶을 때
+  this.filesystemlayer = new fileSystemLayer(this.filesystem); // jshint ignore:line
 }
 
 const fs = require('fs');
@@ -305,7 +308,7 @@ frontFileManager.prototype = {
 
       // 키보드 이벤트 (누를 때)
       $(document).bind('keydown', function (event) {
-        if (event.keyCode == '91') {
+        if ('' + event.keyCode === '91') {
           console.log('command down');
           if (self.currentTargetIdCount === 0) {
             self.currentTargetIdArray[self.currentTargetIdCount++] = self.currentTargetId;
@@ -316,7 +319,7 @@ frontFileManager.prototype = {
 
       // 키보드 이벤트 
       $(document).keyup(function (event) {
-        if (event.keyCode == '91') {
+        if ('' + event.keyCode === '91') {
           console.log('command up');
           self.ctrlFlag = false;
           for (var i = 0; i < self.currentTargetIdCount; i++) {

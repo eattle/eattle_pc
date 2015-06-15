@@ -1,4 +1,5 @@
-function fileSystemLayer(fileSystem) {
+/*global wrap:false*/
+function fileSystemLayer(fileSystem) { // jshint ignore:line
   var functionList = [
     'filetablecopy',
     'addElementPush',

@@ -1,3 +1,13 @@
+var gui = require('nw.gui');
+var win = gui.Window.get();
+var nativeMenuBar = new gui.Menu({ type: 'menubar' });
+nativeMenuBar.createMacBuiltin('Phoket for PC', {
+  hideEdit: true,
+  hideWindow: true
+});
+win.showDevTools();
+win.menu = nativeMenuBar;
+
 var driver = require('usb-msc-driver-nwjs');
 
 var writeScript = function () {

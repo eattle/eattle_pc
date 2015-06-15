@@ -1,3 +1,4 @@
+/*global device:false*/
 function fileSystem() {
 }
 
@@ -963,12 +964,12 @@ fileSystem.prototype = {
 
       console.log("2");
 
-      // 탐색 테이블 삭제 
-      this.searchtable[result[1]][0] = this.searchtable[this.endpoint - 1][0]; // 마지막 문자열 
-      this.searchtable[result[1]][1] = this.searchtable[this.endpoint - 1][1]; // 마지막 번지 
-      this.searchtable[result[1]][2] = this.searchtable[this.endpoint - 1][2]; // 마지막 위치 
-      this.searchtable[result[1]][3] = this.searchtable[this.endpoint - 1][3]; // 마지막 주소  
-      this.searchtable[result[1]][4] = this.searchtable[this.endpoint - 1][4]; // 마지막 파일 길이  
+      // 탐색 테이블 삭제
+      this.searchtable[result[1]][0] = this.searchtable[this.endpoint - 1][0]; // 마지막 문자열
+      this.searchtable[result[1]][1] = this.searchtable[this.endpoint - 1][1]; // 마지막 번지
+      this.searchtable[result[1]][2] = this.searchtable[this.endpoint - 1][2]; // 마지막 위치
+      this.searchtable[result[1]][3] = this.searchtable[this.endpoint - 1][3]; // 마지막 주소
+      this.searchtable[result[1]][4] = this.searchtable[this.endpoint - 1][4]; // 마지막 파일 길이
       this.searchtable[this.endpoint-1][0] = "0";
       this.searchtable[this.endpoint-1][1] = "0";
       this.searchtable[this.endpoint-1][2] = "0";
