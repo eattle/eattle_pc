@@ -14,6 +14,6 @@ function wrap(obj, func) {
   };
 }
 
-if (module !== undefined && module.exports !== undefined) {
+if (typeof exports !== 'undefined') {
   module.exports = { wrap: wrap };
 }
