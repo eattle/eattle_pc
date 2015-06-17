@@ -6,9 +6,9 @@ function frontFileManager() {
   this.filesystemlayer = new fileSystemLayer(this.filesystem); // jshint ignore:line
 }
 
-const fs = require('fs');
-
 frontFileManager.prototype = {
+
+  fs: require('fs'),
 
   currentTargetId: null,
   currentFolderId: null,
@@ -431,7 +431,7 @@ frontFileManager.prototype = {
         return;
       }
       var gm = require('gm').subClass({ imageMagick: true });
-      fs.exists('thumbnails/'+ filename, function (exists) {
+      this.fs.exists('thumbnails/'+ filename, function (exists) {
         if (exists) {
           console.log("썸네일이 이미 존재합니다");
           beginProcess();
@@ -471,7 +471,7 @@ frontFileManager.prototype = {
   },
 
   centerMakeFileNo1: function (filename) {
-    var exists = fs.existsSync("thumbnails/" + filename);
+    var exists = this.fs.existsSync("thumbnails/" + filename);
     var pageCreator = [];
     if (exists) {
       pageCreator = [
@@ -492,7 +492,7 @@ frontFileManager.prototype = {
   },
 
   centerMakeFileNo2: function (filename) {
-    var exists = fs.existsSync("thumbnails/"+ filename);
+    var exists = this.fs.existsSync("thumbnails/"+ filename);
     var pageCreator = [];
     if (exists) {
       pageCreator = [
@@ -746,7 +746,7 @@ frontFileManager.prototype = {
           }
         }
         console.log();
-        fs.stat(file.path, function (err, stats) {
+        this.fs.stat(file.path, function (err, stats) {
           var str = stats.birthtime;
           var picturetaken = str.getTime();
           console.log(str);
@@ -995,10 +995,10 @@ frontFileManager.prototype = {
   dbUpdate: function () {
     var self = this;
     // DB 갱신 existsSync
-    var stats = fs.statSync('./CaPicDB');
-    var fd = fs.openSync('./CaPicDB', "r");
+    var stats = this.fs.statSync('./CaPicDB');
+    var fd = this.fs.openSync('./CaPicDB', "r");
     var buffer = new Buffer(stats.size);
-    fs.readSync(fd, buffer, 0, buffer.length, null);
+    this.fs.readSync(fd, buffer, 0, buffer.length, null);
     console.log(buffer);
 
     //self.filesystemlayer.filedelete("CaPicDB");

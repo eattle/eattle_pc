@@ -7,9 +7,10 @@ var buffer = new Buffer(512);
 const thunkify = require('thunkify');
 const readBlock = thunkify(device.readBlock);
 const writeBlock = thunkify(device.writeBlock);
-const fs = require("fs");
 
 fileSystem.prototype = {
+
+  fs: require('fs'),
 
   CLUSTERSPACESIZE: 512,      // 클러스터 전체 사이즈 
   CLUSTERCNT: 30000,          // 클러스터 갯수 
@@ -149,9 +150,9 @@ fileSystem.prototype = {
 
     var writeStream;
     if (outpath === false) {
-      writeStream = fs.createWriteStream('../' + selectfilename);
+      writeStream = this.fs.createWriteStream('../' + selectfilename);
     } else {
-      writeStream = fs.createWriteStream(outpath + '/' + selectfilename);
+      writeStream = this.fs.createWriteStream(outpath + '/' + selectfilename);
     }
     
     writeStream.write(resultbyte);
