@@ -422,15 +422,16 @@ frontFileManager.prototype = {
         return;
       }
       var filename = self.filesystem.fileNameReturn(count);
-      makeThumbnail(filename);
       count++;
+      makeThumbnail(filename);
     };
+
+    const gm = require('gm').subClass({ imageMagick: true });
 
     var makeThumbnail = function (filename) {
       if (filename === "CaPicDB") {
-        return;
+        return beginProcess();
       }
-      var gm = require('gm').subClass({ imageMagick: true });
       this.fs.exists('thumbnails/'+ filename, function (exists) {
         if (exists) {
           console.log("썸네일이 이미 존재합니다");
