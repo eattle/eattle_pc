@@ -23,6 +23,7 @@
     "mkdirp": "*",
     "gm": "*",
     "exif": "*",
+    "drag-and-drop-files": "*",
     "usb-msc-driver-nwjs": "https://github.com/eattle/usb-msc-driver-nwjs/tarball/develop"
   }
 }
