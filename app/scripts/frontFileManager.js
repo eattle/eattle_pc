@@ -6,6 +6,15 @@ function frontFileManager() {
   this.filesystemlayer = new fileSystemLayer(this.filesystem); // jshint ignore:line
 }
 
+function dbDebug(tag) {
+  return function (err) {
+    console.log('dbDebug', tag, err);
+  };
+}
+
+//const sqlite3 = require('sqlite3');
+//var db = new sqlite3.Database('PhoketDB');
+
 frontFileManager.prototype = {
 
   fs: require('fs'),
@@ -33,11 +42,11 @@ frontFileManager.prototype = {
     var self = this;
     this.filesystemlayer.fileSystemInit(function () {
 
+      var sqlite3 = require('sqlite3');//.verbose();
+      var db = new sqlite3.Database('PhoketDB');
       // 썸네일 만드는 것 
-      self.makeThumbnailProcess(); 
+     // self.makeThumbnailProcess(); 
 
-      var sqlite3 = require('sqlite3').verbose();
-      var db = new sqlite3.Database('CaPicDB');
       // progress bar 
       self.leftFolderAdd(function() {
         self.centerFolderAdd(function() {
@@ -73,7 +82,7 @@ frontFileManager.prototype = {
             // DB 삭제
             db.run('DELETE from folder WHERE id = ' + self.currentFolderId); // 폴더 삭제
             db.run('DELETE from media WHERE folder_id = ' + self.currentFolderId); // 파일 삭제
-            //self.dbUpdate(); //DB갱신
+            //db.Update(); //DB갱신
 
             // USB 삭제
             var count = 0;
@@ -328,12 +337,12 @@ frontFileManager.prototype = {
         }
       });
 
-      //self.dbUpdate();
+      //db.Update();
 
       //db.run("UPDATE media SET picturetaken=1422926902484 where id =999");
       /*
       var sqlite3 = require('sqlite3').verbose();
-      var db = new sqlite3.Database('CaPicDB');
+      var db = new sqlite3.Database('PhoketDB');
       db.all("SELECT * FROM media ORDER BY picturetaken ASC",function(err,rows){
         console.log(rows);
         //rows contain values while errors, well you can figure out.
@@ -356,7 +365,7 @@ frontFileManager.prototype = {
 
       var sqlite3 = require('sqlite3').verbose();
 
-      var db = new sqlite3.Database('CaPicDB');
+      var db = new sqlite3.Database('PhoketDB');
       db.all("SELECT * FROM media",function(err,rows){
         console.log(rows);
         //rows contain values while errors, well you can figure out.
@@ -367,7 +376,7 @@ frontFileManager.prototype = {
       //Load modules
       var sqlite3 = require('sqlite3').verbose();
 
-      var db = new sqlite3.Database('CaPicDB');
+      var db = new sqlite3.Database('PhoketDB');
 
       db.each("SELECT * FROM media", function(err, row) {
             //console.log(row.id + ": " + row.info);
@@ -429,7 +438,7 @@ frontFileManager.prototype = {
     const gm = require('gm').subClass({ imageMagick: true });
 
     var makeThumbnail = function (filename) {
-      if (filename === "CaPicDB") {
+      if (filename === "PhoketDB") {
         return beginProcess();
       }
       this.fs.exists('thumbnails/'+ filename, function (exists) {
@@ -515,9 +524,9 @@ frontFileManager.prototype = {
 
   leftFolderAdd: function (cb) {
     var self = this;
-    var sqlite3 = require('sqlite3').verbose();
-    var db = new sqlite3.Database('CaPicDB');
-
+    var sqlite3 = require('sqlite3');//.verbose();
+      var db = new sqlite3.Database('PhoketDB');
+    
     $('#folders').remove();
     var pageCreator = [
       '<ul id="folders">',
@@ -525,6 +534,7 @@ frontFileManager.prototype = {
     ].join('\n');
     $(pageCreator).appendTo('#projects');
     db.all("SELECT * FROM folder", function (err, rows) {
+      dbDebug('536')(err);
       for (var i = 0; i < rows.length; i++) {
         var foldername = rows[i].name;
         var folderid = rows[i].id;
@@ -555,9 +565,8 @@ frontFileManager.prototype = {
 
   centerFolderAdd: function (cb) {
     var self = this;
-    var sqlite3 = require('sqlite3').verbose();
-    var db = new sqlite3.Database('CaPicDB');
-
+var sqlite3 = require('sqlite3');//.verbose();
+      var db = new sqlite3.Database('PhoketDB');
     $('#filelist').remove();
     var pageCreator = [
       '<ul id="filelist">',
@@ -566,6 +575,7 @@ frontFileManager.prototype = {
 
     $(pageCreator).appendTo('#files');
     db.all('SELECT * FROM folder', function (err, rows) {
+      dbDebug('578')(err);
       for (var i = 0; i < rows.length; i++) {
         var foldername = rows[i].name;
         var folderid = rows[i].id;
@@ -587,15 +597,17 @@ frontFileManager.prototype = {
   centerFileAdd: function (targetName) {
     console.log(targetName);
     var self = this;
+    var sqlite3 = require('sqlite3');//.verbose();
+      var db = new sqlite3.Database('PhoketDB');
     $('#filelist').remove();
     var pageCreator = [
       '<ul id="filelist">',
       '</ui>'
     ].join('\n');
     $(pageCreator).appendTo('#files');
-    var sqlite3 = require('sqlite3').verbose();
-    var db = new sqlite3.Database('CaPicDB');
+    
     db.all("SELECT * FROM media where folder_id = " + targetName, function (err, rows) {
+      dbDebug('609')(err);
       for (var i = 0; i < rows.length; i++) {
         var filename = rows[i].name;
         console.log(filename);
@@ -713,9 +725,9 @@ frontFileManager.prototype = {
 
   addpicdb: function (files) {
     var self = this;
+    var sqlite3 = require('sqlite3');//.verbose();
+      var db = new sqlite3.Database('PhoketDB');
     files = files.slice(0);
-    var sqlite3 = require('sqlite3').verbose();
-    var db = new sqlite3.Database('CaPicDB');
     console.log('Got some files:', files.length);
     if (!files) {
       return;
@@ -723,8 +735,10 @@ frontFileManager.prototype = {
     var beginProcess = function () {
       console.log(files.length);
       if (files.length === 0) {
-        // 폴더 다 지우기 
-        db.run('DELETE from folder');
+        // 폴더 다 지우기
+        console.log('beforeRun');
+       // db.run('DELETE from folder', dbDebug('739'));
+        console.log('afterRun');
         self.calculatePictureInterval();
         return;
       }
@@ -739,6 +753,7 @@ frontFileManager.prototype = {
 
       // 사진 정보 
       db.all("SELECT * FROM media", function (err, rows) {
+        dbDebug('사진 정보 755')(err);
         var maxId = 0;
         console.log(rows.length);
         for (var i = 0; i < rows.length; i++) {
@@ -747,6 +762,7 @@ frontFileManager.prototype = {
           }
         }
         console.log();
+        /*
         this.fs.stat(file.path, function (err, stats) {
           var str = stats.birthtime;
           var picturetaken = str.getTime();
@@ -756,6 +772,10 @@ frontFileManager.prototype = {
           console.log(picturetaken);
           db.run("INSERT into media(id,folder_id,name,picturetaken,year,month,day,latitude,longitude,path) VALUES (" + maxId+idcnt + ",-1,'" + file.name + "'," + picturetaken + "," + res[3] + "," + res[1] + "," + res[2] + ",null,null,null)");
         });
+      */  
+      db.run("INSERT into media(id,folder_id,name,picturetaken,year,month,day,latitude,longitude,path) VALUES (" + maxId+idcnt + ",-1,'" + file.name + "'," + 1433444198000 + "," + 2015 + "," + 6 + "," + 5 + ",null,null,null)",
+        dbDebug('긺'));
+        
         process.nextTick(beginProcess);
       });      
     };
@@ -870,10 +890,11 @@ frontFileManager.prototype = {
   calculatePictureInterval: function() { //사진 간 시간 간격을 계산하는 함수
     var self = this;
     var pictureTakenTime = 0;
-    var sqlite3 = require('sqlite3').verbose();
-    var db = new sqlite3.Database('CaPicDB');
+    var sqlite3 = require('sqlite3');//.verbose();
+      var db = new sqlite3.Database('PhoketDB');
     // DB
     db.all("SELECT * FROM media ORDER BY picturetaken ASC", function (err, rows) {
+      dbDebug('calc')(err);
       for (var i = 0; i < rows.length; i++) {
         // 사진이 촬영된 날짜
         var _pictureTakenTime = rows[i].picturetaken;
@@ -894,7 +915,8 @@ frontFileManager.prototype = {
   pictureClassification: function() {
 
     var self = this;
-
+var sqlite3 = require('sqlite3');//.verbose();
+      var db = new sqlite3.Database('PhoketDB');
     var startFolderID = "";
     var endFolderID = "";
     var folderIDForDB = 0;//Folder DB에 들어가는 아이디
@@ -915,9 +937,8 @@ frontFileManager.prototype = {
 
 
     // DB
-    var sqlite3 = require('sqlite3').verbose();
-    var db = new sqlite3.Database('CaPicDB');
     db.all("SELECT * FROM media ORDER BY picturetaken ASC", function (err, rows) {
+      dbDebug('937')(err);
       var j;
       var new_name;
 
@@ -944,12 +965,12 @@ frontFileManager.prototype = {
           console.log(folderIDForDB + " " + new_name);
               
           // 폴더 만들기 
-          db.run("INSERT into folder(id,image,name,picture_num,thumbNail_id) VALUES (" + folderIDForDB + ",'xx','" + new_name + "'," + pictureNumInStory + ",'null')");
+          db.run("INSERT into folder(id,image,name,picture_num,thumbNail_id) VALUES (" + folderIDForDB + ",'xx','" + new_name + "'," + pictureNumInStory + ",'null')", dbDebug('폴더 만들기'));
 
           // id가 저장되어 있는 거랑 같은 파일 picturetaken id에 folderIDForDB를 넣기 
 
           for (j = 0; j < fileIdcount; j++) {
-            db.run("UPDATE media SET folder_id=" + folderIDForDB + " where id = " + fileIdArray[j]);
+            db.run("UPDATE media SET folder_id=" + folderIDForDB + " where id = " + fileIdArray[j], dbDebug('폴더 만들기 아래'));
           }
 
           pictureNumInStory = 0;
@@ -973,16 +994,16 @@ frontFileManager.prototype = {
         } else {
           new_name = startFolderID + "의 스토리";
         }
-        db.run("INSERT into folder(id,image,name,picture_num,thumbNail_id) VALUES (" + folderIDForDB + ",'xx','" + new_name + "'," + pictureNumInStory + ",'null')");
+        db.run("INSERT into folder(id,image,name,picture_num,thumbNail_id) VALUES (" + folderIDForDB + ",'xx','" + new_name + "'," + pictureNumInStory + ",'null')", dbDebug('마지막 사진'));
         for (j = 0; j < fileIdcount; j++) {
-          db.run("UPDATE media SET folder_id=" + folderIDForDB + " where id = " + fileIdArray[j]);
+          db.run("UPDATE media SET folder_id=" + folderIDForDB + " where id = " + fileIdArray[j], dbDebug('마지막 사진 밑'));
         }
       }
           
       self.leftFolderAdd(function () {
         self.centerFolderAdd(function () {
           $('#loadingBar').hide();
-          self.dbUpdate();
+          db.Update();
         });
       });
 
@@ -996,29 +1017,29 @@ frontFileManager.prototype = {
   dbUpdate: function () {
     var self = this;
     // DB 갱신 existsSync
-    var stats = this.fs.statSync('./CaPicDB');
-    var fd = this.fs.openSync('./CaPicDB', "r");
+    var stats = this.fs.statSync('./PhoketDB');
+    var fd = this.fs.openSync('./PhoketDB', "r");
     var buffer = new Buffer(stats.size);
     this.fs.readSync(fd, buffer, 0, buffer.length, null);
     console.log(buffer);
 
-    //self.filesystemlayer.filedelete("CaPicDB");
-    //self.filesystemlayer.addElementPush("CaPicDB",buffer);
+    //self.filesystemlayer.filedelete("PhoketDB");
+    //self.filesystemlayer.addElementPush("PhoketDB",buffer);
     
-    self.filesystemlayer.filedelete("CaPicDB", function (err) {
+    self.filesystemlayer.filedelete("PhoketDB", function (err) {
       console.log('filedelete ERR ' + err);
       console.log("DELETE END");
-      self.filesystemlayer.addElementPush("CaPicDB", buffer);
+      self.filesystemlayer.addElementPush("PhoketDB", buffer);
     });
 
     /*
-    fs.stat('./CaPicDB', function (error, stats) {
-          fs.open('./CaPicDB', "r", function (error, fd) {
+    fs.stat('./PhoketDB', function (error, stats) {
+          fs.open('./PhoketDB', "r", function (error, fd) {
               var buffer = new Buffer(stats.size);
               fs.read(fd, buffer, 0, buffer.length, null, function (error, bytesRead, buffer) {
                 console.log(buffer);
-                self.filesystemlayer.filedelete("CaPicDB",function(err){
-            self.filesystemlayer.addElementPush("CaPicDB",buffer);
+                self.filesystemlayer.filedelete("PhoketDB",function(err){
+            self.filesystemlayer.addElementPush("PhoketDB",buffer);
             });
               });
           });

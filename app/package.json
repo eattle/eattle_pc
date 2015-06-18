@@ -7,7 +7,7 @@
   "license": "Proprietary",
   "window": {
     "title": "Phoket for PC",
-    "toolbar": true,
+    "toolbar": false,
     "width": 900,
     "height": 556,
     "resizable": false,

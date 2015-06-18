@@ -62,7 +62,7 @@ fileSystem.prototype = {
     // 파일 테이블 
     yield this.incaseSearchTable();
     // USB에서 DB 꺼내오기
-    yield this.fileout("CaPicDB", ".");
+    yield this.fileout("PhoketDB", ".");
   },
 
   fileInputInit: function* (file, binaryString) {
