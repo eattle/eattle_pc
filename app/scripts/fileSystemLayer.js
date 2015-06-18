@@ -21,3 +21,8 @@ function fileSystemLayer(fileSystem) { // jshint ignore:line
     self[name] = wrap(fileSystem, fileSystem[name]);
   });
 }
+
+
+if (typeof exports !== 'undefined') {
+  module.exports = fileSystemLayer;
+}

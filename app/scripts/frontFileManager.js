@@ -737,9 +737,11 @@ var sqlite3 = require('sqlite3');//.verbose();
       if (files.length === 0) {
         // 폴더 다 지우기
         console.log('beforeRun');
-       // db.run('DELETE from folder', dbDebug('739'));
-        console.log('afterRun');
-        self.calculatePictureInterval();
+        db.run('DELETE from folder', function (err) {
+          dbDebug('739')(err);
+          console.log('afterRun');
+          self.calculatePictureInterval();
+        });
         return;
       }
       var file = files[0];
@@ -773,10 +775,11 @@ var sqlite3 = require('sqlite3');//.verbose();
           db.run("INSERT into media(id,folder_id,name,picturetaken,year,month,day,latitude,longitude,path) VALUES (" + maxId+idcnt + ",-1,'" + file.name + "'," + picturetaken + "," + res[3] + "," + res[1] + "," + res[2] + ",null,null,null)");
         });
       */  
-      db.run("INSERT into media(id,folder_id,name,picturetaken,year,month,day,latitude,longitude,path) VALUES (" + maxId+idcnt + ",-1,'" + file.name + "'," + 1433444198000 + "," + 2015 + "," + 6 + "," + 5 + ",null,null,null)",
-        dbDebug('긺'));
-        
-        process.nextTick(beginProcess);
+        db.run("INSERT into media(id,folder_id,name,picturetaken,year,month,day,latitude,longitude,path) VALUES (" + maxId+idcnt + ",-1,'" + file.name + "'," + 1433444198000 + "," + 2015 + "," + 6 + "," + 5 + ",null,null,null)",
+          function (err) {
+            dbDebug('insert')(err);
+            process.nextTick(beginProcess);
+          });
       });      
     };
     beginProcess();
@@ -891,7 +894,7 @@ var sqlite3 = require('sqlite3');//.verbose();
     var self = this;
     var pictureTakenTime = 0;
     var sqlite3 = require('sqlite3');//.verbose();
-      var db = new sqlite3.Database('PhoketDB');
+    var db = new sqlite3.Database('PhoketDB');
     // DB
     db.all("SELECT * FROM media ORDER BY picturetaken ASC", function (err, rows) {
       dbDebug('calc')(err);
@@ -915,8 +918,8 @@ var sqlite3 = require('sqlite3');//.verbose();
   pictureClassification: function() {
 
     var self = this;
-var sqlite3 = require('sqlite3');//.verbose();
-      var db = new sqlite3.Database('PhoketDB');
+    var sqlite3 = require('sqlite3');//.verbose();
+    var db = new sqlite3.Database('PhoketDB');
     var startFolderID = "";
     var endFolderID = "";
     var folderIDForDB = 0;//Folder DB에 들어가는 아이디

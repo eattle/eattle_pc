@@ -5,7 +5,7 @@ nativeMenuBar.createMacBuiltin('Phoket for PC', {
   hideEdit: true,
   hideWindow: true
 });
-win.showDevTools();
+//win.showDevTools();
 win.menu = nativeMenuBar;
 
 var driver = require('usb-msc-driver-nwjs');
